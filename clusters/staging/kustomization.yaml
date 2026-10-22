@@ -12,4 +12,4 @@ images:
     digest: sha256:647c20d2480c925400b478cecce25c23d0ad6daeb06d56ce97ac2044e1365a17
   - name: fizzbuzz-frontend
     newName: crfizzbuzzafqpcdm4ps57m.azurecr.io/fizzbuzz-frontend
-    digest: sha256:d81b386c292eff0a9b48f356963bdc96e56b0b170496594475af8ee40d2382be
+    digest: sha256:8d60b294c46e177c1f1c9b014ed635dcdfe84398f96044967836a84b6fc1f0a2
