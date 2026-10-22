@@ -9,7 +9,7 @@ resources:
 images:
   - name: fizzbuzz-backend
     newName: crfizzbuzzafqpcdm4ps57m.azurecr.io/fizzbuzz-backend
-    digest: sha256:647c20d2480c925400b478cecce25c23d0ad6daeb06d56ce97ac2044e1365a17
+    digest: sha256:8048c3c0ce2a357d6d35417f3b9cb3f0f262b0b3a40c72ff5f5e41ab0be4f320
   - name: fizzbuzz-frontend
     newName: crfizzbuzzafqpcdm4ps57m.azurecr.io/fizzbuzz-frontend
     digest: sha256:8d60b294c46e177c1f1c9b014ed635dcdfe84398f96044967836a84b6fc1f0a2
