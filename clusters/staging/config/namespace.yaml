@@ -1,0 +1,7 @@
+# Gateway (と、証明書の HTTP-01 認証用の一時的な HTTPRoute) を置く namespace。
+# アプリの namespace (fizzbuzz) にはリソースクォータがあり、Gateway のプロキシ Pod の
+# リソース指定と合わないため、別の namespace に分ける
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gateway

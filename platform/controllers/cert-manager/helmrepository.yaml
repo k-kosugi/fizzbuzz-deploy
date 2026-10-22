@@ -1,0 +1,10 @@
+# cert-manager の公式 Helm チャート (OCI)
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: jetstack
+  namespace: cert-manager
+spec:
+  type: oci
+  interval: 1h
+  url: oci://quay.io/jetstack/charts

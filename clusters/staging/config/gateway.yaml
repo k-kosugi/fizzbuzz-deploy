@@ -1,0 +1,40 @@
+# 外部公開の入口。AKS のアプリケーションルーティングの Gateway API 実装 (approuting-istio) が、
+# このリソースから、プロキシの Pod とパブリック IP のロードバランサーを作る。
+#
+# 公開 URL: https://fizzbuzz-kkosugi.japaneast.cloudapp.azure.com/
+#   - パブリック IP に Azure の DNS 名 (<名前>.<リージョン>.cloudapp.azure.com) を付ける。
+#     購入するドメインは不要。名前は、リージョン内で一意にする
+#   - 証明書は、cert-manager が、下の注釈の発行元 (Let's Encrypt) から取得し、自動で更新する
+#
+# / は frontend、/api は backend へ。それぞれの HTTPRoute は、アプリの namespace (fizzbuzz) にある
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: fizzbuzz
+  namespace: gateway
+  annotations:
+    # 試験用 (letsencrypt-staging) で動作を確認したら、letsencrypt-prod に切り替える
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  gatewayClassName: approuting-istio
+  infrastructure:
+    annotations:
+      service.beta.kubernetes.io/azure-dns-label-name: fizzbuzz-kkosugi
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      hostname: fizzbuzz-kkosugi.japaneast.cloudapp.azure.com
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: fizzbuzz-tls
+      allowedRoutes:
+        namespaces:
+          from: All

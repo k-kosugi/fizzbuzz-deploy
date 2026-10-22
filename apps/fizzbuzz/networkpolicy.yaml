@@ -1,0 +1,18 @@
+# この namespace は、同じ namespace からの通信だけを許可する設定 (AllowSameNamespace) になっている。
+# Gateway のプロキシ Pod (namespace: gateway) からの通信を、追加で許可する。
+# NetworkPolicy は許可を足し合わせるため、他の namespace からの通信は、引き続き遮断される
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-gateway
+  labels:
+    app.kubernetes.io/part-of: fizzbuzz
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: gateway

@@ -1,0 +1,53 @@
+# 外部公開のルーティング。Gateway (namespace: gateway) の https リスナーに接続する。
+#   /api 以下 -> backend
+#   それ以外  -> frontend (backend の /actuator などは、外部に公開しない)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: fizzbuzz
+  labels:
+    app.kubernetes.io/part-of: fizzbuzz
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: fizzbuzz
+      namespace: gateway
+      sectionName: https
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+      backendRefs:
+        - name: backend
+          port: 8080
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: frontend
+          port: 80
+---
+# HTTP (80) へのアクセスを、HTTPS に転送する。
+# 証明書の認証用の HTTPRoute (/.well-known/acme-challenge/...) は、より具体的なパスなので、こちらより優先される
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: https-redirect
+  labels:
+    app.kubernetes.io/part-of: fizzbuzz
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: fizzbuzz
+      namespace: gateway
+      sectionName: http
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
