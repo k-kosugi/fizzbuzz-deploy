@@ -13,8 +13,8 @@ metadata:
   name: fizzbuzz
   namespace: gateway
   annotations:
-    # 試験用 (letsencrypt-staging) で動作を確認したら、letsencrypt-prod に切り替える
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    # Let's Encrypt の本番。動作確認には、試験用の letsencrypt-staging を使う (ブラウザーは信頼しない)
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   gatewayClassName: approuting-istio
   infrastructure:
