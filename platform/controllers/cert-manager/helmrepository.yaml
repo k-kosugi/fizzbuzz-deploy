@@ -1,9 +1,11 @@
 # cert-manager の公式 Helm チャート (OCI)
+# AKS の Flux 拡張は、HelmRelease をその namespace の flux-applier として実行する。
+# 権限を持つのは flux-system の flux-applier だけなので、HelmRepository と HelmRelease は flux-system に置く
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: jetstack
-  namespace: cert-manager
+  namespace: flux-system
 spec:
   type: oci
   interval: 1h

@@ -2,8 +2,13 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cert-manager
-  namespace: cert-manager
+  # AKS の Flux 拡張は、HelmRelease をその namespace の flux-applier として実行する。
+  # 権限を持つのは flux-system の flux-applier だけなので、ここに置き、導入先は targetNamespace で指定する
+  namespace: flux-system
 spec:
+  releaseName: cert-manager
+  targetNamespace: cert-manager
+  storageNamespace: cert-manager
   interval: 1h
   timeout: 10m
   chart:
